@@ -20,6 +20,7 @@ export async function deleteReceipt(id: string): Promise<void> {
   await api.delete(`/receipts/${id}`)
 }
 
-export function getReceiptDownloadUrl(id: string): string {
-  return `http://localhost:3333/receipts/download/${id}`
+export async function getReceiptDownloadUrl(id: string): Promise<string> {
+  const { data } = await api.get<{ url: string }>(`/receipts/download/${id}`)
+  return `http://localhost:3333${data.url}`
 }

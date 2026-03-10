@@ -29,6 +29,12 @@ export function RefundDetails() {
     },
   })
 
+  async function handleOpenReceipt() {
+    if (!refund?.receipt) return
+    const url = await getReceiptDownloadUrl(refund.receipt.id)
+    window.open(url, "_blank")
+  }
+
   if (isLoading) {
     return (
       <div className={styles.page}>
@@ -57,8 +63,6 @@ export function RefundDetails() {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(refund.value)
-
-  const receiptUrl = refund.receipt ? getReceiptDownloadUrl(refund.receipt.id) : ""
 
   return (
     <div className={styles.page}>
@@ -92,15 +96,13 @@ export function RefundDetails() {
             </div>
 
             <div className={styles.actions}>
-              <a
-                href={receiptUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
                 className={styles.receiptLink}
+                onClick={handleOpenReceipt}
               >
                 <FileIcon size={18} weight="bold" />
                 Abrir comprovante
-              </a>
+              </button>
 
               <button
                 className={styles.deleteButton}
